@@ -6,15 +6,16 @@ const App = () => {
   //this is a hook, they go directly above
   const [simpsons, setSimpsons] = useState();
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("ASC");
 
   const getData = async () => {
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
     );
     setSimpsons(data);
-    data.forEach((element, index) => {
-      element.id = index + Math.random();
-    });
+    // simpsons.forEach((element, index) => {
+    //   element.id = index + Math.random();
+    // });
   };
 
   useEffect(() => {
@@ -45,6 +46,10 @@ const App = () => {
 
   const onInput = (e) => {
     setSearch(e.target.value);
+  };
+
+  const onOrder = (e) => {
+    setSort(e.target.value);
   };
   // console.log(onDelete);
   // const onDelete = (quote) => {
@@ -77,10 +82,26 @@ const App = () => {
     });
   }
 
+  if (sort === "ASC") {
+    data.sort((a, b) => {
+      if (a.character > b.character) return 1;
+      if (a.character < b.character) return -1;
+    });
+  } else if (sort === "DSC") {
+    data.sort((a, b) => {
+      if (a.character > b.character) return -1;
+      if (a.character < b.character) return 1;
+    });
+  }
+
   return (
     <>
       <p> like = {total}</p>
       <input onInput={onInput} type="text"></input>
+      <select onInput={onOrder}>
+        <option value="ASC">AZ</option>
+        <option value="DSC">ZA</option>
+      </select>
       <Data simpsons={data} onLikeToggle={onLikeToggle} onDelete={onDelete} />
     </>
   );
