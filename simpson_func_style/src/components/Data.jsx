@@ -1,10 +1,11 @@
 import Card from "./Card";
 
 const Data = (props) => {
-  //   console.log(props, "hi");
-
+  //
+  //time to destructure
   const { simpsons, onLikeToggle, onDelete } = props;
-
+  //
+  //map over api data
   return simpsons.map((item) => {
     return (
       <Card

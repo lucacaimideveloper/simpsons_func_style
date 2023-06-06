@@ -3,11 +3,12 @@ import axios from "axios";
 import Data from "./components/Data";
 
 const App = () => {
-  //this is a hook, they go directly above
+  //those are a hooks, they go directly above
   const [simpsons, setSimpsons] = useState();
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("ASC");
-
+  //
+  //api call
   const getData = async () => {
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
@@ -17,13 +18,13 @@ const App = () => {
     //   element.id = index + Math.random();
     // });
   };
-
+  //
+  //acces to api mechanism
   useEffect(() => {
     getData();
   }, []);
-
-  // console.log(data);
-
+  //
+  //toggle like button
   const onLikeToggle = (quote) => {
     const _data = [...simpsons];
 
@@ -34,7 +35,8 @@ const App = () => {
     _data[indexOf].liked = !_data[indexOf].liked;
     setSimpsons([...simpsons]);
   };
-
+  //
+  //delet funtion
   const onDelete = (quote) => {
     const indexOf = simpsons.findIndex((item) => {
       return item.quote === quote;
@@ -43,11 +45,13 @@ const App = () => {
     _data.splice(indexOf, 1);
     setSimpsons([...simpsons]);
   };
-
+  //
+  //input target
   const onInput = (e) => {
     setSearch(e.target.value);
   };
-
+  //
+  //sort target
   const onOrder = (e) => {
     setSort(e.target.value);
   };
@@ -64,9 +68,10 @@ const App = () => {
   // };
 
   if (!simpsons) return <p>Loading...</p>;
-
+  //
+  //total like calculator
   let total = 0;
-  // console.log(data, "l39");
+
   simpsons.forEach((item) => {
     if (item.liked) {
       total++;
@@ -81,7 +86,8 @@ const App = () => {
       return item.character.toLowerCase().includes(search);
     });
   }
-
+  //
+  //sort selector
   if (sort === "ASC") {
     data.sort((a, b) => {
       if (a.character > b.character) return 1;

@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 const Card = (props) => {
-  // const [liked, setLiked] = useState(false);
+  //
+  //time to destructure
   const { item, onLikeToggle, onDelete } = props;
 
   return (
     <>
-      {/* <div className={liked ? "like" : "notLiked"}></div> */}
       <h1>{item.character}</h1>
       <p>{item.quote}</p>
       <img src={item.image} alt={item.character} />
