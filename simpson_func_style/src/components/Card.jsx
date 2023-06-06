@@ -1,20 +1,20 @@
 import { useState } from "react";
 
 const Card = (props) => {
-  const [liked, setLiked] = useState(false);
-  const { item, onLikeToggle } = props;
+  // const [liked, setLiked] = useState(false);
+  const { item, onLikeToggle, onDelete } = props;
 
   return (
     <>
-      <div className={liked ? "like" : "notLiked"}></div>
+      {/* <div className={liked ? "like" : "notLiked"}></div> */}
       <h1>{item.character}</h1>
       <p>{item.quote}</p>
       <img src={item.image} alt={item.character} />
       <button onClick={() => onLikeToggle(item.quote)}>
-        <i
-          style={{ color: liked ? " red" : " white" }}
-          className="fa-solid fa-heart"></i>
+        {item.liked ? "liked" : "notLiked"}
+        {/* <i className ="fa-solid fa-heart"{item.liked ? "like" : "notLike" }></i> */}
       </button>
+      <button onClick={() => onDelete(item.quote)}>Delete</button>
     </>
   );
 };
