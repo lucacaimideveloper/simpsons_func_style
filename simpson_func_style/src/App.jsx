@@ -43,7 +43,7 @@ const App = () => {
     });
     const _data = [...simpsons];
     _data.splice(indexOf, 1);
-    setSimpsons([...simpsons]);
+    setSimpsons([..._data]);
   };
   //
   //input target
