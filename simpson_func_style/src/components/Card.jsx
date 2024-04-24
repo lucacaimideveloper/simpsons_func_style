@@ -1,17 +1,14 @@
-import { useState } from "react";
-
 const Card = (props) => {
-  //
-  //time to destructure
-  const { item, onLikeToggle, onDelete } = props;
+  const { item, onLikeToggle, onDelete, characterDirection } = props;
 
   return (
     <>
       <h1>{item.character}</h1>
       <p>{item.quote}</p>
-      <img src={item.image} alt={item.character} />
+      <div className={"item.characterDirection" === "Right" ? "right" : "left"}>
+        <img src={item.image} alt={item.character} />
+      </div>
       <button onClick={() => onLikeToggle(item.quote)}>
-        {/* {item.liked ? "liked" : "notLiked"} */}
         <i
           style={{ color: item.liked ? " red" : " white" }}
           className="fa-solid fa-heart"></i>

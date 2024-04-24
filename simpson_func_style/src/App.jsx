@@ -1,42 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Data from "./components/Data";
 
 const App = () => {
   //those are a hooks, they go directly above
-  const [simpsons, setSimpsons] = useState();
+  const [simpsons, setSimpsons] = useState([]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("ASC");
   //
   //api call
   const getData = async () => {
-    const { data } = await axios.get(
-      `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
-    );
-    setSimpsons(data);
-    // simpsons.forEach((element, index) => {
-    //   element.id = index + Math.random();
-    // });
+    try {
+      const { data } = await axios.get(
+        `https://thesimpsonsquoteapi.glitch.me/quotes?count=10`
+      );
+      setSimpsons(data);
+    } catch (err) {
+      console.log(err, "something weird is happening!");
+    }
   };
+
   //
   //acces to api mechanism
   useEffect(() => {
     getData();
   }, []);
+
+  if (!simpsons) return <p>Loading...</p>;
   //
   //toggle like button
   const onLikeToggle = (quote) => {
-    const _data = [...simpsons];
-
     const indexOf = simpsons.findIndex((item) => {
       return item.quote === quote;
     });
-
+    const _data = [...simpsons];
     _data[indexOf].liked = !_data[indexOf].liked;
     setSimpsons([...simpsons]);
   };
   //
-  //delet funtion
+  //delete function
+
+  // const onDelete = (quote) => {
+  //   const updatedSimpsons = simpsons.filter((item) => item.quote !== quote);
+  //   setSimpsons(updatedSimpsons);
+  // };
+
   const onDelete = (quote) => {
     const indexOf = simpsons.findIndex((item) => {
       return item.quote === quote;
@@ -47,7 +55,7 @@ const App = () => {
   };
   //
   //input target
-  const onInput = (e) => {
+  const onInput = async (e) => {
     setSearch(e.target.value);
   };
   //
@@ -55,38 +63,24 @@ const App = () => {
   const onOrder = (e) => {
     setSort(e.target.value);
   };
-  // console.log(onDelete);
-  // const onDelete = (quote) => {
-  //   const _data = [...data];
 
-  //   const indexOf = data.findIndex((item) => {
-  //     return item.quote === quote;
-  //   });
-
-  //   _data.splice(indexOf, 1);
-  //   setData([...data]);
-  // };
-
-  if (!simpsons) return <p>Loading...</p>;
   //
   //total like calculator
   let total = 0;
-
   simpsons.forEach((item) => {
     if (item.liked) {
       total++;
     }
   });
-  //
-  //filter
+
   let data = [...simpsons];
 
   if (search) {
-    data = data.filter((item) => {
-      return item.character.toLowerCase().includes(search);
+    data = data.filter((character) => {
+      character.character.toLowerCase().includes(search.toLocaleLowerCase());
     });
   }
-  //
+
   //sort selector
   if (sort === "ASC") {
     data.sort((a, b) => {
@@ -99,10 +93,13 @@ const App = () => {
       if (a.character < b.character) return 1;
     });
   }
+  //
+  //
 
   return (
     <>
       <p> like = {total}</p>
+
       <input onInput={onInput} type="text"></input>
       <select onInput={onOrder}>
         <option value="ASC">AZ</option>
